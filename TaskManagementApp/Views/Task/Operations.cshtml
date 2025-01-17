@@ -1,0 +1,126 @@
+﻿@model IEnumerable<TaskManagement.Domain.Entities.Task>
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Quick Operations</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Assigned To</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.Title</td>
+                        <td>
+                            <select asp-for="@obj.Status" asp-items="obj.StatusList" class="form-control" id="tstatus-@obj.Id">
+                                <option value="">Select a Status</option>
+                            </select>
+                        </td>
+                        <td>@obj.PriorityText</td>
+                        <td>
+                            <select asp-for="@obj.AssignedTo" asp-items="obj.AssignedList" class="form-control" id="tstatus-@obj.Id">
+                                <option value="">Please Select</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <button class="btn btn-success mx-2" onclick="assignTask(@obj.Id, '@obj.AssignedTo')"><i class="bi bi-pencil-square"></i>Assign Task</button>
+                                <button class="btn btn-success mx-2" onclick="changeTaskStatus(@obj.Id, '@obj.Status')"><i class="bi bi-pencil-square"></i>Change Status</button>
+                                <button class="btn btn-success mx-2" onclick="addComment(@obj.Id)"><i class="bi bi-pencil-square"></i>Add Comment</button>
+                                 <a asp-controller="Task" asp-action="Index" 
+                                   class="btn btn-success mx-2">
+                                    <i class="bi bi-pencil-square"></i> Back
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
+<script>
+    async function assignTask(taskId, userId) {
+        const response = await fetch('/Task/AssignTask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ taskId, userId })
+        });
+        if (response.ok) alert('Task assigned successfully!');
+    }
+
+    async function changeTaskStatus(taskId, status) {
+        const status = document.querySelector(`#tstatus-${taskId}`).value;
+        const response = await fetch('/Task/ChangeTaskStatus?taskId=' + taskId + '&status=' + status, {
+            method: 'POST'
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ taskId, status })
+        });
+
+        if (response.ok) alert('Task status updated successfully!');
+    }
+
+    </script>
+
+    <script>
+
+   async function addComment(taskId) {
+       alert(taskId);
+        const response = await fetch('/Task/AddComment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ taskId })
+        });
+        if (response.ok) alert('Comment added successfully!');
+    }
+
+    </script>
+
+   
+
+<script>
+
+    // Establish connection to SignalR hub
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/taskHub")
+        .build();
+
+    // Handle received task updates
+    connection.on("ReceiveTaskUpdate", (taskId, status) => {
+        // Update the task status in the UI
+        alert("singlarR" + status);
+        const taskElement = document.querySelector(`#tstatus-${taskId}`);
+        if (taskElement) {
+            taskElement.value = status;
+        }
+    });
+
+    // Start the connection
+    connection.start()
+        .then(() => console.log("Connected to SignalR hub"))
+        .catch(err => console.error("SignalR error:", err));
+
+    connection.onclose(async () => {
+        await connection.start();
+    });
+</script>

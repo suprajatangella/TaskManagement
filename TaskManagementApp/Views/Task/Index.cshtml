@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TaskManagement.Domain.Entities.Task>
+
+@{
+    string prioritySortParam = ViewBag.CurrentSort == "priority" ? "priority_desc" : "priority";
+}
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Task List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <div class="row pb-3">
+            <div class="col-6 offset-6 text-end">
+                <a asp-controller="Task" asp-action="Create" class="btn btn-secondary">
+                    <i class="bi bi-plus-circle"></i> Create New Task
+                </a>
+            </div>
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>
+                        <a asp-action="Index" asp-controller="Task" asp-route-sortOrder="@prioritySortParam">
+                            Priority
+                        </a>
+                    </th>
+                    <th>Assigned To</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Due Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.Title</td>
+                        <td>@obj.Description</td>
+                        <td>@obj.StatusText</td>
+                        <td>@obj.PriorityText</td>
+                        <td>@obj.AssignedToText</td>
+                        <td>@obj.CreatedBy</td>
+                        <td>@obj.CreatedDate.ToString("dd/mm/yyyy")</td>
+                        <td>@obj.DueDate</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Task" asp-action="Edit" asp-route-Id="@obj.Id"
+                                   class="btn btn-success mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a asp-controller="Task" asp-action="Delete" asp-route-Id="@obj.Id"
+                                   class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                                <a asp-controller="Task" asp-action="Operations" asp-route-Id="@obj.Id"
+                                   class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash-fill"></i> Operations
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
