@@ -51,6 +51,6 @@ namespace TaskManagement.Domain.Entities
         public IEnumerable<SelectListItem>? AssignedList { get; set; }
 
         [NotMapped]
-        public ICollection<TaskComment> TaskComments { get; set; }
+        public ICollection<TaskComment>? TaskComments { get; set; }
     }
 }

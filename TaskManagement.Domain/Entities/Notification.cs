@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,11 +15,12 @@ namespace TaskManagement.Domain.Entities
         public int Id { get; set; }
         [Required]
         public string UserId { get; set; }
+        [NotMapped]
+        public IEnumerable<SelectListItem>? UserList { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public IEnumerable<ApplicationUser> Users { get; set; }
+        [Required]
         public string Message { get; set; }
-        public bool IsRead { get; set; }
-        public DateOnly CreatedAt { get; set; } = DateOnly.MaxValue;
+        public bool IsRead { get; set; } = false;
+        public DateOnly CreatedAt { get; set; } = DateOnly.FromDateTime(DateTime.Now);
     }
 }

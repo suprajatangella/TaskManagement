@@ -22,11 +22,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<ITaskCommentService, TaskCommentService>();
-
-
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -48,6 +46,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

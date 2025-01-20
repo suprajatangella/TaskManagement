@@ -145,26 +145,26 @@ namespace TaskManagement.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    // Get the currently logged-in user
                     var user = await _userManager.FindByEmailAsync(loginVM.Email);
-                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    // List of roles to validate against
+                    var validRoles = new List<string> { "Admin", "Manager", "Customer", "Developer" };
+                    
+                    if (user == null)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Login", "Account");
                     }
-                    else if (await _userManager.IsInRoleAsync(user, "Customer"))
+
+                    // Check if the user is in any of the valid roles
+                    foreach (var role in validRoles)
                     {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        if (string.IsNullOrEmpty(loginVM.RedirectUrl))
+                        if (await _userManager.IsInRoleAsync(user, role))
                         {
+                            // If the user has a valid role, redirect to the home page
                             return RedirectToAction("Index", "Home");
                         }
-                        else
-                        {
-                            return LocalRedirect(loginVM.RedirectUrl);
-                        }
-                    }
+                        
+                    }         
                 }
                 else
                 {

@@ -1,3 +1,13 @@
 ﻿@{
-    Layout = "_LayoutAdmin";
+    var vaildRoles = new List<string> { "Admin", "Manager", "Developer", "Customer" }; // Add roles here
+    bool isInVaildRole = vaildRoles.Any(role => User.IsInRole(role));
+
+    if (isInVaildRole)
+    {
+        Layout = "_LayoutAdmin"; // Apply the admin layout
+    }
+    else
+    {
+        Layout = "_Layout"; // Apply the default layout
+    }
 }

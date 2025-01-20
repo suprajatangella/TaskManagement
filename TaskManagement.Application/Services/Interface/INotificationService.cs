@@ -14,6 +14,6 @@ namespace TaskManagement.Application.Services.Interface
         void CreateNotification(Notification notification);
         void UpdateNotification(Notification notification);
         bool DeleteNotification(int id);
-        void MarkAsReadAsync(int id);
+        void MarkAsRead(int id);
     }
 }
