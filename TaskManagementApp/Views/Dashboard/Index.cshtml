@@ -13,16 +13,6 @@
             padding: 0;
         }
 
-        header {
-            text-align: center;
-            background-color: #f8f9fa;
-            padding: 20px 0;
-            border-bottom: 1px solid #ddd;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
         .chart-container {
             display: flex;
             justify-content: center;
@@ -43,7 +33,8 @@
     </style>
 </head>
 <body>
-    
+
+    <!-- Chart Container -->
     <div class="chart-container">
         <!-- Radial Chart -->
         <div class="chart-box">
@@ -84,12 +75,8 @@
             },
             options: {
                 plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    title: {
-                        display: false
-                    }
+                    legend: { position: 'bottom' },
+                    title: { display: false }
                 }
             }
         });
@@ -107,12 +94,8 @@
             },
             options: {
                 plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    title: {
-                        display: false
-                    }
+                    legend: { position: 'bottom' },
+                    title: { display: false }
                 }
             }
         });
@@ -133,21 +116,19 @@
             },
             options: {
                 plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    },
-                    title: {
-                        display: false
-                    }
+                    legend: { display: true, position: 'top' },
+                    title: { display: false }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+                    y: { beginAtZero: true }
                 }
             }
         });
     </script>
 </body>
 </html>
+
+
+
+
+ 
