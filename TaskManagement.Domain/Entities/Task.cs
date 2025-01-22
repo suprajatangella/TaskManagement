@@ -35,7 +35,8 @@ namespace TaskManagement.Domain.Entities
         {
             new SelectListItem { Value = "1", Text = "Not Started" },
             new SelectListItem { Value = "2", Text = "In Progress" },
-            new SelectListItem { Value = "3", Text = "Completed" },
+            new SelectListItem { Value = "3", Text = "Pending" },
+            new SelectListItem { Value = "4", Text = "Completed" },
         };
 
         [NotMapped]

@@ -1,0 +1,153 @@
+﻿@model dynamic
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .chart-box {
+            width: 300px;
+            text-align: center;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="chart-container">
+        <!-- Radial Chart -->
+        <div class="chart-box">
+            <h3>Task Distribution (Radial Chart)</h3>
+            <canvas id="radialChart"></canvas>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="chart-box">
+            <h3>Task Distribution (Pie Chart)</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <!-- Line Chart -->
+        <div class="chart-box">
+            <h3>Task Trends (Line Chart)</h3>
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const taskData = {
+            completed: @Model.Completed,
+            pending: @Model.Pending,
+            overdue: @Model.Overdue
+                };
+
+        // Radial Chart
+        const ctxRadial = document.getElementById('radialChart').getContext('2d');
+        new Chart(ctxRadial, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'Pending', 'Overdue'],
+                datasets: [{
+                    data: [taskData.completed, taskData.pending, taskData.overdue],
+                    backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Pie Chart
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['Completed', 'Pending', 'Overdue'],
+                datasets: [{
+                    data: [taskData.completed, taskData.pending, taskData.overdue],
+                    backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Line Chart
+        const ctxLine = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ['Completed', 'Pending', 'Overdue'],
+                datasets: [{
+                    label: 'Tasks',
+                    data: [taskData.completed, taskData.pending, taskData.overdue],
+                    borderColor: '#007bff',
+                    fill: false,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
