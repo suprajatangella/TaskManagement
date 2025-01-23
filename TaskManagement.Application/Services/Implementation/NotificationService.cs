@@ -39,9 +39,17 @@ namespace TaskManagement.Application.Services.Implementation
 
         public IEnumerable<Notification> GetAllNotifications(string userId)
         {
-            return  _unitOfWork.Notification.GetAll()
-                .Where(n => n.UserId == userId && !n.IsRead)
-            .OrderByDescending(n => n.CreatedAt);
+            var unreadNotifications = _unitOfWork.Notification.GetAll()
+        .Where(n => n.UserId == userId && !n.IsRead)
+        .OrderByDescending(n => n.CreatedAt)
+        .ToList();
+
+            var readNotifications = _unitOfWork.Notification.GetAll()
+                .Where(n => n.UserId == userId && n.IsRead)
+                .OrderByDescending(n => n.CreatedAt)
+                .ToList();
+
+            return unreadNotifications.Concat(readNotifications);
         }
 
         public Notification GetNotificationById(int id)
