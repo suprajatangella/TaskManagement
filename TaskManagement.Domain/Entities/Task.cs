@@ -25,10 +25,13 @@ namespace TaskManagement.Domain.Entities
         public string? PriorityText { get; set; }
         [NotMapped]
         public string? AssignedToText { get; set; }
-        public string? CreatedBy { get; set; } 
+        public string? CreatedBy { get; set; }
+        public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public string? UpdatedBy { get; set; } 
+        public DateOnly? UpdatedDate { get; set; } = null;
         public DateOnly DueDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
-        public DateTime CreatedDate { get; set; } 
-        public DateTime UpdatedDate { get; set; } 
+        
+
 
         [NotMapped]
         public IEnumerable<SelectListItem>? StatusList { get; set; } = new List<SelectListItem>

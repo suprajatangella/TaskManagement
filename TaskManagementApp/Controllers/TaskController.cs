@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using TaskManagement.Application.Services.Interface;
@@ -103,6 +104,7 @@ namespace TaskManagement.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                task.UpdatedDate = DateOnly.FromDateTime(DateTime.Now);
                 _taskService.UpdateTask(task);
                 TempData["success"] = "The Task has been updated Successfully.";
                 return RedirectToAction(nameof(Index));
@@ -153,6 +155,8 @@ namespace TaskManagement.Web.Controllers
             }
 
             task.AssignedTo = data.GetProperty("userId").ToString();
+            task.UpdatedBy = data.GetProperty("userId").ToString();
+            task.UpdatedDate = DateOnly.FromDateTime(DateTime.Now);
             _taskService.UpdateTask(task);
 
             // Notify user about task assignment
@@ -172,7 +176,9 @@ namespace TaskManagement.Web.Controllers
                 return NotFound();
             }
 
-            task.Status = data.GetProperty("status").ToString(); 
+            task.Status = data.GetProperty("status").ToString();
+            task.UpdatedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            task.UpdatedDate = DateOnly.FromDateTime(DateTime.Now);
             _taskService.UpdateTask(task);
 
             // Notify clients via SignalR
@@ -197,7 +203,15 @@ namespace TaskManagement.Web.Controllers
             comment.UserId = task.AssignedTo;
             comment.CommentDate = DateTime.Now;
             task.AssignedList = GetUsers();
-            comment.CommentText = task.AssignedList.FirstOrDefault(a => a.Value == task.AssignedTo)?.Text ?? "Not Assigned" + "is completed the issue";
+            task.AssignedToText = task.AssignedList.FirstOrDefault(a => a.Value == task.AssignedTo)?.Text ?? "Not Assigned";
+            comment.CommentText = task.Status switch
+            {
+                "4" => $"{task.AssignedToText} is completed the task",
+                "1" => $"{task.AssignedToText} Not started the task",
+                "3" => $"The task is pending with {task.AssignedToText}",
+                _ => $"{task.AssignedToText} is working on the task"
+            };
+
             _taskCommentService.CreateTaskComment(comment);
             // Notify user about a new comment
             await _hubContext.Clients.User(task.AssignedTo).SendAsync("ReceiveNotification", $"New comment on Task {comment.TaskId}: {comment.CommentText}");

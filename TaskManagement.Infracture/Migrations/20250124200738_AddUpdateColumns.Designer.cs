@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManagement.InfraStructure.Data;
 
@@ -11,9 +12,11 @@ using TaskManagement.InfraStructure.Data;
 namespace TaskManagement.InfraStructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250124200738_AddUpdateColumns")]
+    partial class AddUpdateColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,7 +311,7 @@ namespace TaskManagement.InfraStructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly?>("UpdatedDate")
+                    b.Property<DateOnly>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("date")
                         .HasDefaultValueSql("GETDATE()");
@@ -347,7 +350,7 @@ namespace TaskManagement.InfraStructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly?>("UpdatedDate")
+                    b.Property<DateOnly>("UpdatedDate")
                         .HasColumnType("date");
 
                     b.Property<string>("UserId")

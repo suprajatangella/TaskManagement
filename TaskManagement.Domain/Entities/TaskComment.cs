@@ -16,14 +16,20 @@ namespace TaskManagement.Domain.Entities
         public int TaskId { get; set; }
 
         [ForeignKey(nameof(TaskId))]
-        public IEnumerable<Task> Tasks { get; set; }
+        public IEnumerable<Task>? Tasks { get; set; }
         [Required]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]
-        public IEnumerable<ApplicationUser> Users { get; set; }
-        public string CommentText { get; set; }
-        public DateTime CommentDate { get; set; }
+        public IEnumerable<ApplicationUser>? Users { get; set; }
+        [Required]
+        public string CommentText { get; set; } = string.Empty;
+        [Required]
+        public DateTime CommentDate { get; set; } = DateTime.Now;
+        public string? CreatedBy { get; set; }
+        public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public string? UpdatedBy { get; set; }
+        public DateOnly? UpdatedDate { get; set; } = null;
 
 
     }

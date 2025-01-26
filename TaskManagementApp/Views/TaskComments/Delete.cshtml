@@ -1,0 +1,51 @@
+﻿@model TaskComment
+
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Delete Task Comment</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        <form method="post" class="row" enctype="multipart/form-data">
+            <div class="p-3">
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="Id" disabled class="form-control border shadow" />
+                    <label asp-for="Id" class="ms-2"></label>
+                </div>
+                <div class="form-floating py-1 col-12">
+                    <input asp-for="CommentText" disabled class="form-control border shadow" />
+                    <label asp-for="CommentText" class="ms-2"></label>
+                </div>
+               
+                <div class="form-floating py-1 col-12">
+                    <input type="text" value="@Model.CommentDate.ToString("yyyy-MM-dd")" disabled class="form-control border shadow" />
+                    <label asp-for="CommentDate" class="ms-2 "></label>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-check-circle"></i> Delete
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="TaskComments" asp-action="Index" class="btn btn-secondary w-100">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
+

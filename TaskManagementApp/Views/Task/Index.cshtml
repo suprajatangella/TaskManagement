@@ -50,8 +50,8 @@
                         <td>@obj.StatusText</td>
                         <td>@obj.PriorityText</td>
                         <td>@obj.AssignedToText</td>
-                        <td>@obj.CreatedBy</td>
-                        <td>@obj.CreatedDate.ToString("dd/mm/yyyy")</td>
+                        <td>@obj.AssignedList.FirstOrDefault(a => a.Value == obj.CreatedBy)?.Text</td>
+                        <td>@obj.CreatedDate</td>
                         <td>@obj.DueDate</td>
                         <td>
                             <div class="w-75 btn-group" role="group">

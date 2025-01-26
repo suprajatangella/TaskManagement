@@ -1,0 +1,91 @@
+﻿@model IEnumerable<TaskComment>
+
+<!DOCTYPE html>
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Task Comments</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body border p-4">
+        @* <div class="row pb-3">
+            <div class="col-6 offset-6 text-end">
+                <a asp-controller="Task" asp-action="Create" class="btn btn-secondary">
+                    <i class="bi bi-plus-circle"></i> Create New Task
+                </a>
+            </div>
+        </div> *@
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Comment</th>
+                    <th>Created At</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var comment in Model)
+                    {
+                        <tr>
+                            <td>@comment.CommentText</td>
+                            <td>@comment.CommentDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <div class="w-75 btn-group" role="group">
+                                    <a asp-controller="TaskComments" asp-action="Edit" asp-route-Id="@comment.Id"
+                                       class="btn btn-success mx-2">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                    <a asp-controller="TaskComments" asp-action="Delete" asp-route-Id="@comment.Id"
+                                       class="btn btn-danger mx-2">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" style="text-align: center;">No comments found</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@* <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Task Comments</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Task Comments</h1>
+    <table>
+       
+    </table>
+</body>
+</html> *@
+
