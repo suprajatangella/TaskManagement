@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 using TaskManagement.Application.Interfaces;
 using TaskManagement.Application.Services.Interface;
@@ -10,10 +12,12 @@ namespace TaskManagement.Web.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITaskCommentService _taskCommentService;
-        public TaskCommentsController(IUnitOfWork unitOfWork, ITaskCommentService taskCommentService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public TaskCommentsController(IUnitOfWork unitOfWork, ITaskCommentService taskCommentService, UserManager<ApplicationUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _taskCommentService = taskCommentService;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -30,6 +34,11 @@ namespace TaskManagement.Web.Controllers
                 .Where(c => c.UserId == userId)
                 .OrderByDescending(c => c.CommentDate)
                 .ToList();
+
+            foreach (var comment in userTaskComments)
+            {
+                comment.UserList = GetUsers();
+            }
 
             return View(userTaskComments);
         }
@@ -86,6 +95,15 @@ namespace TaskManagement.Web.Controllers
                 TempData["error"] = "Failed to delete the task comment.";
             }
             return View(comment);
+        }
+
+        public IEnumerable<SelectListItem> GetUsers()
+        {
+            return _userManager.Users.Select(user => new SelectListItem
+            {
+                Value = user.Id, // Set the Value property to the user's ID
+                Text = user.Name // Set the Text property to the user's Name
+            });
         }
     }
 }

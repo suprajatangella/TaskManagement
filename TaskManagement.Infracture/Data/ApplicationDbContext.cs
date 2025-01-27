@@ -29,13 +29,13 @@ namespace TaskManagement.InfraStructure.Data
             modelBuilder.Entity<IdentityUserLogin<string>>()
                 .HasKey(login => new { login.LoginProvider, login.ProviderKey }); // Composite key
 
-            modelBuilder.Entity<TaskManagement.Domain.Entities.Task>()
-                .Property(e => e.CreatedDate)
-                .HasDefaultValueSql("GETDATE()"); // Default to current timestamp for SQL Server
+            //modelBuilder.Entity<TaskManagement.Domain.Entities.Task>()
+            //    .Property(e => e.CreatedDate)
+            //    .HasDefaultValueSql("GETDATE()"); // Default to current timestamp for SQL Server
 
-            modelBuilder.Entity<TaskManagement.Domain.Entities.Task>()
-                .Property(e => e.UpdatedDate)
-                .HasDefaultValueSql("GETDATE()"); // Default to current timestamp for SQL Server
+            //modelBuilder.Entity<TaskManagement.Domain.Entities.Task>()
+            //    .Property(e => e.UpdatedDate)
+            //    .HasDefaultValueSql("GETDATE()"); // Default to current timestamp for SQL Server
         }
 
     }

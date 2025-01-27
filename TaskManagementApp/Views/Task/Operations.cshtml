@@ -85,7 +85,6 @@
     <script>
 
    async function addComment(taskId) {
-       alert(taskId);
         const response = await fetch('/Task/AddComment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

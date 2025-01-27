@@ -22,7 +22,10 @@
             <thead>
                 <tr>
                     <th>Comment</th>
+                    <th>Created By</th>
                     <th>Created At</th>
+                    <th>Updated By</th>
+                    <th>Updated Date</th>
                     <th></th>
                 </tr>
             </thead>
@@ -33,7 +36,10 @@
                     {
                         <tr>
                             <td>@comment.CommentText</td>
+                            <td>@comment.UserList.FirstOrDefault(c=>c.Value == comment.CreatedBy)?.Text</td>
                             <td>@comment.CommentDate.ToString("yyyy-MM-dd")</td>
+                            <td>@comment.UserList.FirstOrDefault(c => c.Value == comment.UpdatedBy)?.Text</td>
+                            <td>@comment.UpdatedDate</td>
                             <td>
                                 <div class="w-75 btn-group" role="group">
                                     <a asp-controller="TaskComments" asp-action="Edit" asp-route-Id="@comment.Id"

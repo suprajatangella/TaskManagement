@@ -202,6 +202,7 @@ namespace TaskManagement.Web.Controllers
             comment.TaskId = task.Id;
             comment.UserId = task.AssignedTo;
             comment.CommentDate = DateTime.Now;
+            comment.CreatedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             task.AssignedList = GetUsers();
             task.AssignedToText = task.AssignedList.FirstOrDefault(a => a.Value == task.AssignedTo)?.Text ?? "Not Assigned";
             comment.CommentText = task.Status switch

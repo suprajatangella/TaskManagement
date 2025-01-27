@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -30,6 +31,9 @@ namespace TaskManagement.Domain.Entities
         public DateOnly CreatedDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
         public string? UpdatedBy { get; set; }
         public DateOnly? UpdatedDate { get; set; } = null;
+
+        [NotMapped]
+        public IEnumerable<SelectListItem>? UserList { get; set; }
 
 
     }
